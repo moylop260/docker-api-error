@@ -8,8 +8,9 @@ services:
 
 before_install:
     # - docker build -t moylop260/docker-issue-16059 .
+    - mkdir ${TRAVIS_BUILD_DIR}/lib-docker
     - docker pull moylop260/docker-issue-16059
-    - docker run --name dkr-in-dkr-1 -itd -p 1376:2376 --privileged -v /home/lib-docker:/var/lib/docker moylop260/docker-issue-16059
+    - docker run --name dkr-in-dkr-1 -itd -p 1376:2376 --privileged -v ${TRAVIS_BUILD_DIR}/lib-docker:/var/lib/docker moylop260/docker-issue-16059
     - docker ps -a
     - docker version
     - docker exec dkr-in-dkr-1 /bin/sh -c "docker pull postgres"
