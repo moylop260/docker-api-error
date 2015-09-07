@@ -9,18 +9,17 @@ services:
 before_install:
     # - docker build -t moylop260/docker-issue-16059 .
     - docker pull moylop260/docker-issue-16059
-    - docker run --name dkr-in-dkr-1 -itd -p 1376:2376 --privileged moylop260/docker-issue-16059
+    - docker run --name dkr-in-dkr-1 -itd -p 1376:2376 --privileged -v /home/lib-docker:/var/lib/docker moylop260/docker-issue-16059
     - docker ps -a
-    - docker --version
-    - docker exec dkr-in-dkr-1 /bin/sh -c "docker --version"
-    - docker exec dkr-in-dkr-1 /bin/sh -c "lsb_release -a"
-    - docker exec dkr-in-dkr-1 /bin/sh -c "apt-get autoremove --purge lxc"
-    - docker exec dkr-in-dkr-1 /bin/sh -c "apt-get purge lxc*"
+    - docker version
+    - docker exec dkr-in-dkr-1 /bin/sh -c "docker pull postgres"
+    - docker exec dkr-in-dkr-1 /bin/sh -c "docker version && lsb_release -a"
+    - docker exec dkr-in-dkr-1 /bin/sh -c "apt-get autoremove --purge lxc && apt-get purge lxc*"
     - docker exec dkr-in-dkr-1 /bin/sh -c "apt-get clean && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*"
     - docker exec dkr-in-dkr-1 /bin/sh -c "curl -sSL https://get.docker.com/ | sh"
+    - sleep 60
+    - docker exec dkr-in-dkr-1 /bin/sh -c "docker version"
     - docker stop dkr-in-dkr-1
     - docker start dkr-in-dkr-1
-    - sleep 30
-    - docker logs dkr-in-dkr-1
-    - docker exec dkr-in-dkr-1 /bin/sh -c "docker --version"
+    - sleep 60
     - docker exec dkr-in-dkr-1 /bin/sh -c "docker version"
