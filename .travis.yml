@@ -1,0 +1,15 @@
+sudo: required
+
+python:
+  - "2.7"
+
+services:
+  - docker
+
+before_install:
+    - docker build -t dkr-in-dkr .
+    - docker run --name dkr-in-dkr-1 -d -p 1376:2376 --privileged dkr-in-dkr
+    - docker ps -a
+    - docker --version
+    - docker run dkr-in-dkr-1 /bin/sh -c "docker --version"
+
